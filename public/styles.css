@@ -1773,7 +1773,7 @@ h1 {
 .room-list h3,
 .room-form h3 {
     margin-bottom: 15px;
-    color: #2c3e50;
+    color: var(--text-primary);
     font-size: 1.2em;
 }
 
@@ -1783,9 +1783,9 @@ h1 {
 
 .room-level-group h4 {
     margin-bottom: 10px;
-    color: #34495e;
+    color: var(--text-primary);
     font-size: 1em;
-    border-bottom: 1px solid #ecf0f1;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
 }
 
