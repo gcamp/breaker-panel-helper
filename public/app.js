@@ -45,13 +45,18 @@ class BreakerPanelApp {
     setupEventListeners() {
         // Panel management
         this.bindElement('new-panel', 'click', () => this.openNewPanelModal());
+        this.bindElement('rename-panel', 'click', () => this.openRenamePanelModal());
         this.bindElement('delete-panel', 'click', () => this.deleteCurrentPanel());
         this.bindElement('current-panel', 'change', (e) => this.switchPanel(parseInt(e.target.value)));
         this.bindElement('manage-rooms', 'click', () => this.openRoomManagementModal());
-        
+
         // New panel modal
         this.bindElement('new-panel-form', 'submit', (e) => this.createNewPanel(e));
         this.bindElement('cancel-new-panel', 'click', () => this.closeNewPanelModal());
+
+        // Rename panel modal
+        this.bindElement('rename-panel-form', 'submit', (e) => this.renamePanel(e));
+        this.bindElement('cancel-rename-panel', 'click', () => this.closeRenamePanelModal());
         
         // Room management modal
         this.bindElement('room-form', 'submit', (e) => this.createRoom(e));
@@ -291,6 +296,19 @@ class BreakerPanelApp {
         this.hideModal('new-panel-modal');
     }
 
+    openRenamePanelModal() {
+        if (!this.currentPanel) {
+            alert('No panel selected to rename.');
+            return;
+        }
+        document.getElementById('rename-panel-name').value = this.currentPanel.name;
+        this.showModal('rename-panel-modal');
+    }
+
+    closeRenamePanelModal() {
+        this.hideModal('rename-panel-modal');
+    }
+
     showModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) modal.style.display = 'block';
@@ -303,7 +321,7 @@ class BreakerPanelApp {
 
     async createNewPanel(e) {
         e.preventDefault();
-        
+
         const formData = new FormData(e.target);
         const panelData = {
             name: formData.get('name'),
@@ -320,6 +338,32 @@ class BreakerPanelApp {
             this.closeNewPanelModal();
         } catch (error) {
             this.handleError('Failed to create panel', error);
+        }
+    }
+
+    async renamePanel(e) {
+        e.preventDefault();
+
+        if (!this.currentPanel) {
+            alert('No panel selected to rename.');
+            return;
+        }
+
+        const formData = new FormData(e.target);
+        const newName = formData.get('name');
+
+        try {
+            await this.api.updatePanel(this.currentPanel.id, {
+                name: newName,
+                size: this.currentPanel.size
+            });
+
+            this.currentPanel.name = newName;
+            await this.loadAllPanels();
+            await this.populatePanelSelector();
+            this.closeRenamePanelModal();
+        } catch (error) {
+            this.handleError('Failed to rename panel', error);
         }
     }
 
