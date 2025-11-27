@@ -43,7 +43,8 @@ class BreakerPanelApp {
     // ============================================================================
 
     setupEventListeners() {
-        // Panel management
+        // Panel management dropdown
+        this.bindElement('manage-panels', 'click', () => this.togglePanelDropdown());
         this.bindElement('new-panel', 'click', () => this.openNewPanelModal());
         this.bindElement('rename-panel', 'click', () => this.openRenamePanelModal());
         this.bindElement('delete-panel', 'click', () => this.deleteCurrentPanel());
@@ -106,14 +107,21 @@ class BreakerPanelApp {
                 if (modal) modal.style.display = 'none';
             });
         });
-        
+
         // Click outside modal to close
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.style.display = 'none';
             }
+
+            // Close dropdowns when clicking outside
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
         });
-        
+
         // ESC key to close modals
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -132,6 +140,11 @@ class BreakerPanelApp {
                 this.sortCircuitList(column);
             }
         });
+    }
+
+    togglePanelDropdown() {
+        const dropdown = document.querySelector('#manage-panels').nextElementSibling;
+        dropdown.classList.toggle('show');
     }
 
     // ============================================================================
