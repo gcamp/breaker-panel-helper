@@ -85,7 +85,6 @@ describe('Integration Tests - Real-world Scenarios', () => {
                     position: 1,
                     label: 'Kitchen Outlets',
                     amperage: 20,
-                    critical: false,
                     monitor: false,
                     confirmed: true
                 });
@@ -98,7 +97,6 @@ describe('Integration Tests - Real-world Scenarios', () => {
                     position: 3,
                     label: 'Garage Subpanel Feed',
                     amperage: 60,
-                    critical: true,
                     monitor: false,
                     confirmed: true,
                     breaker_type: 'double_pole'
@@ -249,7 +247,6 @@ describe('Integration Tests - Real-world Scenarios', () => {
             // Verify double pole breaker
             const doublePoleBreaker = mainBreakersResponse.body.find(b => b.breaker_type === 'double_pole');
             expect(doublePoleBreaker).toBeDefined();
-            expect(doublePoleBreaker.critical).toBe(1);
 
             // Verify tandem breakers
             const tandemBreakers = mainBreakersResponse.body.filter(b => b.breaker_type === 'tandem');

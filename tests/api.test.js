@@ -125,7 +125,6 @@ describe('Breaker Panel API Tests', () => {
                 position: 1,
                 label: 'Kitchen Outlets',
                 amperage: 20,
-                critical: false,
                 monitor: true,
                 confirmed: false,
                 double_pole: false,
@@ -153,7 +152,6 @@ describe('Breaker Panel API Tests', () => {
                 position: 3,
                 label: 'Bedroom Outlets A',
                 amperage: 15,
-                critical: false,
                 monitor: false,
                 confirmed: false,
                 breaker_type: 'tandem',
@@ -165,7 +163,6 @@ describe('Breaker Panel API Tests', () => {
                 position: 3,
                 label: 'Bedroom Outlets B',
                 amperage: 15,
-                critical: false,
                 monitor: false,
                 confirmed: false,
                 breaker_type: 'tandem',
@@ -197,7 +194,6 @@ describe('Breaker Panel API Tests', () => {
                 position: 5,
                 label: 'Central AC Unit',
                 amperage: 40,
-                critical: true,
                 monitor: true,
                 confirmed: true,
                 breaker_type: 'double_pole',
@@ -211,7 +207,6 @@ describe('Breaker Panel API Tests', () => {
                 .expect(201);
 
             expect(response.body.breaker_type).toBe('double_pole');
-            expect(response.body.critical).toBe(true);
             expect(response.body.confirmed).toBe(true);
         });
 

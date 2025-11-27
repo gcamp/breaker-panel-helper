@@ -19,7 +19,6 @@ const dom = new JSDOM(`
             <form id="breaker-form">
                 <input id="breaker-label" name="label" />
                 <input id="breaker-amperage" name="amperage" />
-                <input id="breaker-critical" name="critical" type="checkbox" />
                 <input id="breaker-monitor" name="monitor" type="checkbox" />
                 <input id="breaker-confirmed" name="confirmed" type="checkbox" />
                 <input id="breaker-double-pole" name="doublePole" type="checkbox" />
@@ -61,7 +60,6 @@ const dom = new JSDOM(`
     </table>
     <!-- Circuit list filter elements -->
     <input id="circuit-search" />
-    <input type="checkbox" id="critical-filter" />
     <input type="checkbox" id="monitor-filter" />
     <input type="checkbox" id="not-confirmed-filter" />
     <select id="room-filter"></select>
@@ -299,7 +297,6 @@ describe('Frontend Unit Tests', () => {
             mockApp.currentBreaker = {
                 label: 'Test Breaker',
                 amperage: 20,
-                critical: true,
                 monitor: false,
                 confirmed: true,
                 breaker_type: 'tandem',
@@ -310,7 +307,6 @@ describe('Frontend Unit Tests', () => {
 
             expect(document.getElementById('breaker-label').value).toBe('Test Breaker');
             expect(document.getElementById('breaker-amperage').value).toBe('20');
-            expect(document.getElementById('breaker-critical').checked).toBe(true);
             expect(document.getElementById('breaker-monitor').checked).toBe(false);
             expect(document.getElementById('breaker-confirmed').checked).toBe(true);
         });
@@ -356,11 +352,11 @@ describe('Frontend Unit Tests', () => {
                 allCircuitData: [
                     {
                         circuit: { id: 1, room: 'Kitchen', type: 'outlet', notes: 'Counter outlets' },
-                        breaker: { id: 1, position: 1, label: 'Kitchen Outlets', amperage: 20, critical: false, monitor: true }
+                        breaker: { id: 1, position: 1, label: 'Kitchen Outlets', amperage: 20, monitor: true }
                     },
                     {
                         circuit: { id: 2, room: 'Garage', type: 'appliance', notes: 'Garage door opener' },
-                        breaker: { id: 2, position: 3, label: 'Garage Door', amperage: 15, critical: true, monitor: false }
+                        breaker: { id: 2, position: 3, label: 'Garage Door', amperage: 15, monitor: false }
                     }
                 ],
                 currentSort: { column: 'breaker', direction: 'asc' },
@@ -379,12 +375,11 @@ describe('Frontend Unit Tests', () => {
                 searchTerm: 'kitchen',
                 room: '',
                 type: '',
-                critical: false,
                 monitor: false
             };
 
             const filtered = circuitListManager.filterCircuitData(filters);
-            
+
             expect(filtered).toHaveLength(1);
             expect(filtered[0].circuit.room).toBe('Kitchen');
         });
@@ -394,34 +389,20 @@ describe('Frontend Unit Tests', () => {
                 searchTerm: '',
                 room: 'Garage',
                 type: '',
-                critical: false,
                 monitor: false
             };
 
             const filtered = circuitListManager.filterCircuitData(filters);
-            
+
             expect(filtered).toHaveLength(1);
             expect(filtered[0].circuit.room).toBe('Garage');
         });
 
         test('should filter circuit data by flags', () => {
-            const criticalFilters = {
-                searchTerm: '',
-                room: '',
-                type: '',
-                critical: true,
-                monitor: false
-            };
-
-            const criticalFiltered = circuitListManager.filterCircuitData(criticalFilters);
-            expect(criticalFiltered).toHaveLength(1);
-            expect(criticalFiltered[0].breaker.critical).toBe(true);
-
             const monitorFilters = {
                 searchTerm: '',
                 room: '',
                 type: '',
-                critical: false,
                 monitor: true
             };
 
@@ -432,12 +413,11 @@ describe('Frontend Unit Tests', () => {
 
         test('should create circuit row with correct data', () => {
             const circuit = { id: 1, room: 'Kitchen', type: 'outlet', notes: 'Test notes' };
-            const breaker = { 
-                id: 1, 
-                position: 1, 
-                label: 'Test Breaker', 
-                amperage: 20, 
-                critical: true, 
+            const breaker = {
+                id: 1,
+                position: 1,
+                label: 'Test Breaker',
+                amperage: 20,
                 monitor: false,
                 confirmed: true,
                 double_pole: false,
@@ -445,7 +425,7 @@ describe('Frontend Unit Tests', () => {
             };
 
             const row = circuitListManager.createCircuitRow(circuit, breaker);
-            
+
             expect(row.tagName).toBe('TR');
             expect(row.dataset.breakerId).toBe('1');
             expect(row.dataset.circuitId).toBe('1');
@@ -453,7 +433,6 @@ describe('Frontend Unit Tests', () => {
             expect(row.innerHTML).toContain('outlet');
             expect(row.innerHTML).toContain('Test notes');
             expect(row.innerHTML).toContain('20A');
-            expect(row.innerHTML).toContain('Critical');
             expect(row.innerHTML).toContain('Confirmed');
         });
 
@@ -503,11 +482,11 @@ describe('Frontend Unit Tests', () => {
         test('should get sort values correctly', () => {
             const itemA = {
                 circuit: { room: 'Kitchen', type: 'outlet' },
-                breaker: { position: 1, amperage: 20, critical: true, monitor: false }
+                breaker: { position: 1, amperage: 20, monitor: false }
             };
             const itemB = {
                 circuit: { room: 'Garage', type: 'appliance' },
-                breaker: { position: 2, amperage: 15, critical: false, monitor: true }
+                breaker: { position: 2, amperage: 15, monitor: true }
             };
 
             // Test position sorting
@@ -522,19 +501,19 @@ describe('Frontend Unit Tests', () => {
 
             // Test flags sorting
             const [flagA, flagB] = circuitListManager.getSortValues(itemA, itemB, 'flags');
-            expect(flagA).toBe(2); // critical = 2
+            expect(flagA).toBe(0); // no flags
             expect(flagB).toBe(1); // monitor = 1
         });
 
         test('should clear filters correctly', () => {
             // Mock DOM elements
             document.getElementById('circuit-search').value = 'test';
-            document.getElementById('critical-filter').checked = true;
-            
+            document.getElementById('monitor-filter').checked = true;
+
             circuitListManager.clearCircuitFilters();
-            
+
             expect(document.getElementById('circuit-search').value).toBe('');
-            expect(document.getElementById('critical-filter').checked).toBe(false);
+            expect(document.getElementById('monitor-filter').checked).toBe(false);
         });
     });
 

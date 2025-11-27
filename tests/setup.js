@@ -27,7 +27,6 @@ global.testUtils = {
         position: Math.floor(Math.random() * 40) + 1,
         label: `Test Breaker ${Math.random().toString(36).substr(2, 9)}`,
         amperage: [15, 20, 30, 40, 50][Math.floor(Math.random() * 5)],
-        critical: Math.random() > 0.5,
         monitor: Math.random() > 0.5,
         confirmed: Math.random() > 0.5,
         double_pole: Math.random() > 0.8 // Less likely
