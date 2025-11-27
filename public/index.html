@@ -20,6 +20,7 @@
                 
                 <div class="panel-actions">
                     <button id="new-panel">New Panel</button>
+                    <button id="rename-panel">Rename Panel</button>
                     <button id="delete-panel">Delete Panel</button>
                     <button id="manage-rooms">Manage Rooms</button>
                 </div>
@@ -63,6 +64,23 @@
                     <div class="form-actions">
                         <button type="submit">Create Panel</button>
                         <button type="button" id="cancel-new-panel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="rename-panel-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Rename Panel</h2>
+                <form id="rename-panel-form">
+                    <div class="form-group">
+                        <label for="rename-panel-name">Panel Name:</label>
+                        <input type="text" id="rename-panel-name" name="name" placeholder="Enter new panel name" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Rename Panel</button>
+                        <button type="button" id="cancel-rename-panel">Cancel</button>
                     </div>
                 </form>
             </div>
