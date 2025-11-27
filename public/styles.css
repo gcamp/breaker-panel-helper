@@ -134,20 +134,30 @@ h1 {
    CONTROL PANELS
    ============================================================================ */
 
-.controls {
+.controls,
+.panel-container,
+.circuit-list-container {
     background: var(--bg-primary);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.controls {
     color: var(--text-primary);
     padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 2px 10px var(--shadow-color);
     margin-bottom: var(--spacing-xl);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-lg);
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.circuit-list-container {
+    margin-top: 20px;
 }
 
 .panel-management {
@@ -163,7 +173,8 @@ h1 {
     gap: 10px;
 }
 
-.panel-selector select {
+.panel-selector select,
+.panel-selector-move select {
     padding: 8px;
     border: 1px solid var(--input-border);
     border-radius: 4px;
@@ -173,7 +184,8 @@ h1 {
     transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-.panel-selector select:focus {
+.panel-selector select:focus,
+.panel-selector-move select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
@@ -260,21 +272,19 @@ h1 {
     color: white;
 }
 
-#delete-panel:hover {
-    background-color: #c0392b;
-}
-
 #delete-panel:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-#manage-rooms {
+#manage-rooms,
+.goto-panel {
     background-color: #8b5cf6;
     color: white;
 }
 
-#manage-rooms:hover {
+#manage-rooms:hover,
+.goto-panel:hover {
     background-color: #7c3aed;
 }
 
@@ -291,27 +301,7 @@ h1 {
     gap: 10px;
 }
 
-.mode-btn {
-    padding: 6px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.mode-btn:hover {
-    background-color: #f8f9fa;
-    border-color: #3498db;
-}
-
-.mode-btn.active {
-    background-color: #3498db;
-    color: white;
-    border-color: #3498db;
-}
-
+.mode-btn,
 .display-btn {
     padding: 6px 12px;
     border: 1px solid #ddd;
@@ -322,8 +312,15 @@ h1 {
     transition: all 0.3s ease;
 }
 
+.mode-btn:hover,
 .display-btn:hover {
     background-color: #f8f9fa;
+    border-color: #3498db;
+}
+
+.mode-btn.active {
+    background-color: #3498db;
+    color: white;
     border-color: #3498db;
 }
 
@@ -359,14 +356,6 @@ h1 {
     background-color: #2980b9;
 }
 
-.panel-container {
-    background: var(--bg-primary);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px var(--shadow-color);
-    border: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
 
 .breaker-panel {
     display: grid;
@@ -558,13 +547,8 @@ h1 {
     border-radius: 50%;
 }
 
-.indicator.monitor {
-    background-color: #9b59b6;
-}
-
-.indicator.confirmed {
-    background-color: #27ae60;
-}
+.indicator.monitor { background-color: #9b59b6; }
+.indicator.confirmed { background-color: #27ae60; }
 
 .modal {
     display: none;
@@ -616,7 +600,9 @@ h1 {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.filter-group input,
+.filter-group select {
     width: 100%;
     padding: 8px;
     border: 1px solid var(--input-border);
@@ -628,7 +614,9 @@ h1 {
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.filter-group input:focus,
+.filter-group select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
@@ -645,7 +633,9 @@ h1 {
 }
 
 /* Move Circuit Modal Styles */
-.move-source, .move-destination {
+.move-source,
+.move-destination,
+.move-options {
     padding: 15px;
     margin: 10px 0;
     border: 1px solid var(--border-color);
@@ -653,7 +643,12 @@ h1 {
     background-color: var(--bg-secondary);
 }
 
-.move-source h3, .move-destination h3 {
+.move-options {
+    margin-bottom: 20px;
+}
+
+.move-source h3,
+.move-destination h3 {
     margin-bottom: 10px;
     color: var(--text-primary);
     font-size: 16px;
@@ -673,32 +668,27 @@ h1 {
     border-top: 1px solid var(--border-color);
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    color: white;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-color);
-    filter: brightness(0.9);
 }
 
 .btn-secondary {
     background-color: var(--medium-gray);
-    color: white;
 }
 
+.btn-primary:hover,
 .btn-secondary:hover {
-    background-color: var(--medium-gray);
     filter: brightness(0.9);
 }
 
@@ -730,20 +720,13 @@ h1 {
 
 
 .remove-circuit {
-    background-color: var(--danger-color);
-    color: white;
     border: none;
     padding: 4px 8px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-    transition: background-color 0.3s ease;
 }
 
-.remove-circuit:hover {
-    background-color: var(--danger-color);
-    filter: brightness(0.9);
-}
 
 .circuit-form {
     display: grid;
@@ -771,9 +754,13 @@ h1 {
     color: var(--text-primary);
 }
 
-.modal-top-actions {
+.modal-top-actions,
+.form-actions {
     display: flex;
     gap: 10px;
+}
+
+.modal-top-actions {
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 20px;
@@ -781,7 +768,15 @@ h1 {
     border-bottom: 1px solid #ddd;
 }
 
-.modal-top-actions button {
+.form-actions {
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.modal-top-actions button,
+.form-actions button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -789,13 +784,23 @@ h1 {
     font-size: 14px;
 }
 
-.modal-top-actions button[type="submit"] {
+.modal-top-actions button[type="submit"],
+.form-actions button[type="submit"] {
     background-color: #27ae60;
     color: white;
 }
 
-.modal-top-actions button[type="submit"]:hover {
+.modal-top-actions button[type="submit"]:hover,
+.form-actions button[type="submit"]:hover {
     background-color: #219a52;
+}
+
+#delete-panel,
+.delete-btn,
+.delete-room-btn,
+.remove-circuit {
+    background-color: #e74c3c;
+    color: white;
 }
 
 .delete-btn {
@@ -803,17 +808,29 @@ h1 {
     color: white !important;
 }
 
-.delete-btn:hover {
+.delete-btn:hover,
+#delete-panel:hover,
+.delete-room-btn:hover,
+.remove-circuit:hover {
     background-color: #c0392b !important;
+}
+
+.move-btn,
+#clear-filters {
+    background-color: var(--medium-gray);
+    color: white;
 }
 
 .move-btn {
     background-color: #f39c12 !important;
-    color: white !important;
 }
 
 .move-btn:hover {
     background-color: #e67e22 !important;
+}
+
+#clear-filters:hover {
+    filter: brightness(0.9);
 }
 
 /* Move Modal Specific Styles */
@@ -823,12 +840,6 @@ h1 {
     overflow-y: auto;
 }
 
-.move-options {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: var(--bg-secondary);
-    border-radius: 6px;
-}
 
 .move-options .help-text {
     font-size: 12px;
@@ -855,20 +866,7 @@ h1 {
 }
 
 .panel-selector-move select {
-    padding: 8px;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    background: var(--input-bg);
-    font-size: 14px;
-    color: var(--text-primary);
-    transition: border-color 0.3s ease, background-color 0.3s ease;
     flex: 1;
-}
-
-.panel-selector-move select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 .destination-panel-container {
@@ -966,68 +964,7 @@ h1 {
     justify-content: flex-end;
 }
 
-.confirm-btn {
-    background-color: var(--success-color) !important;
-    color: white !important;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.confirm-btn:hover {
-    background-color: #2ecc71 !important;
-}
-
-.cancel-btn {
-    background-color: var(--medium-gray) !important;
-    color: white !important;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.cancel-btn:hover {
-    background-color: #7f8c8d !important;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-}
-
-.form-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.form-actions button[type="submit"] {
-    background-color: #27ae60;
-    color: white;
-}
-
-.form-actions button[type="submit"]:hover {
-    background-color: #219a52;
-}
-
-.form-actions button[type="button"] {
-    background-color: #95a5a6;
-    color: white;
-}
-
-.form-actions button[type="button"]:hover {
-    background-color: #7f8c8d;
-}
-
+.confirm-btn,
 #add-circuit {
     background-color: #3498db;
     color: white;
@@ -1035,11 +972,43 @@ h1 {
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 20px;
+}
+
+.confirm-btn {
+    background-color: var(--success-color) !important;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.confirm-btn:hover {
+    background-color: #2ecc71 !important;
 }
 
 #add-circuit:hover {
     background-color: #2980b9;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.form-actions button[type="button"],
+.cancel-btn {
+    background-color: #95a5a6 !important;
+    color: white !important;
+}
+
+.form-actions button[type="button"]:hover,
+.cancel-btn:hover {
+    background-color: #7f8c8d !important;
+}
+
+#add-circuit {
+    margin-bottom: 20px;
 }
 
 .subpanel-controls {
@@ -1053,8 +1022,6 @@ h1 {
 }
 
 .goto-panel {
-    background-color: #8b5cf6;
-    color: white;
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -1063,18 +1030,7 @@ h1 {
     white-space: nowrap;
 }
 
-.goto-panel:hover {
-    background-color: #7c3aed;
-}
-
 /* Circuit List Styles */
-.circuit-list-container {
-    background: var(--bg-primary);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: var(--shadow-md);
-    margin-top: 20px;
-}
 
 .circuit-list-header {
     margin-bottom: 20px;
@@ -1164,25 +1120,11 @@ h1 {
     letter-spacing: 0.5px;
 }
 
-.circuit-type-outlet {
-    background-color: #3498db;
-}
-
-.circuit-type-lighting {
-    background-color: #f39c12;
-}
-
-.circuit-type-heating {
-    background-color: #e74c3c;
-}
-
-.circuit-type-appliance {
-    background-color: #27ae60;
-}
-
-.circuit-type-subpanel {
-    background-color: #8b5cf6;
-}
+.circuit-type-outlet { background-color: #3498db; }
+.circuit-type-lighting { background-color: #f39c12; }
+.circuit-type-heating { background-color: #e74c3c; }
+.circuit-type-appliance { background-color: #27ae60; }
+.circuit-type-subpanel { background-color: #8b5cf6; }
 
 .circuit-type-pill.no-type {
     background-color: #95a5a6;
@@ -1230,23 +1172,22 @@ h1 {
     -webkit-box-orient: initial;
 }
 
-.double-pole-indicator {
-    background-color: #fd79a8;
+.double-pole-indicator,
+.tandem-indicator,
+.flag-badge {
     color: white;
     padding: 2px 4px;
     border-radius: 3px;
     font-size: 11px;
+}
+
+.double-pole-indicator,
+.tandem-indicator {
     margin-left: 5px;
 }
 
-.tandem-indicator {
-    background-color: #74b9ff;
-    color: white;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-size: 11px;
-    margin-left: 5px;
-}
+.double-pole-indicator { background-color: #fd79a8; }
+.tandem-indicator { background-color: #74b9ff; }
 
 .amperage-cell {
     font-weight: 600;
@@ -1263,19 +1204,11 @@ h1 {
 
 .flag-badge {
     padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 11px;
     font-weight: 600;
-    color: white;
 }
 
-.flag-monitor {
-    background-color: #8b5cf6;
-}
-
-.flag-confirmed {
-    background-color: #27ae60;
-}
+.flag-monitor { background-color: #8b5cf6; }
+.flag-confirmed { background-color: #27ae60; }
 
 .linked-panel-link {
     color: #3498db;
@@ -1323,18 +1256,6 @@ h1 {
 .filter-group input,
 .filter-group select {
     padding: 6px 10px;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-}
-
-.filter-group input:focus,
-.filter-group select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 #circuit-search {
@@ -1366,18 +1287,11 @@ h1 {
 
 #clear-filters {
     padding: 6px 12px;
-    background-color: var(--medium-gray);
-    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 13px;
     height: fit-content;
-}
-
-#clear-filters:hover {
-    background-color: var(--medium-gray);
-    filter: brightness(0.9);
 }
 
 /* ============================================================================
@@ -1805,21 +1719,10 @@ h1 {
     border: 1px solid #e9ecef;
 }
 
-.room-item[data-level="basement"] {
-    border-left: 4px solid #3498db;
-}
-
-.room-item[data-level="main"] {
-    border-left: 4px solid #27ae60;
-}
-
-.room-item[data-level="upper"] {
-    border-left: 4px solid #f39c12;
-}
-
-.room-item[data-level="outside"] {
-    border-left: 4px solid #95a5a6;
-}
+.room-item[data-level="basement"] { border-left: 4px solid #3498db; }
+.room-item[data-level="main"] { border-left: 4px solid #27ae60; }
+.room-item[data-level="upper"] { border-left: 4px solid #f39c12; }
+.room-item[data-level="outside"] { border-left: 4px solid #95a5a6; }
 
 /* Drag and Drop Styles */
 .room-item[draggable="true"] {
@@ -1856,17 +1759,11 @@ h1 {
 }
 
 .delete-room-btn {
-    background-color: #e74c3c;
-    color: white;
     border: none;
     padding: 4px 8px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 11px;
-}
-
-.delete-room-btn:hover {
-    background-color: #c0392b;
 }
 
 .no-rooms {
