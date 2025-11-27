@@ -90,6 +90,10 @@ global.window.i18n = {
 const ApiClient = require('../public/api-client.js');
 const PanelRenderer = require('../public/panel-renderer.js');
 const CircuitListManager = require('../public/circuit-list.js');
+const BreakerPanelApp = require('../public/app.js');
+
+// Make BreakerPanelApp globally available for other modules
+global.BreakerPanelApp = BreakerPanelApp;
 
 describe('Frontend Unit Tests', () => {
     describe('ApiClient', () => {
@@ -460,7 +464,7 @@ describe('Frontend Unit Tests', () => {
                 position: 3, 
                 label: 'Bedroom Outlets', 
                 amperage: 15,
-                tandem: true,
+                breaker_type: 'tandem',
                 slot_position: 'A'
             };
 
@@ -477,7 +481,7 @@ describe('Frontend Unit Tests', () => {
                 position: 5, 
                 label: 'Central AC', 
                 amperage: 40,
-                double_pole: true
+                breaker_type: 'double_pole'
             };
 
             const row = circuitListManager.createCircuitRow(circuit, breaker);

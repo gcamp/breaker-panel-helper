@@ -52,9 +52,9 @@
     
     /* Table Row Colors */
     --table-row-even: #fafafa;
-    --table-row-even-hover: #f0f0f0;
+    --table-row-even-hover: #808080;
     --table-row-highlight: #e3f2fd;
-    --table-row-hover-bg: #3498db;
+    --table-row-hover-bg: #808080;
     --table-row-hover-text: #ffffff;
     
     /* Spacing */
@@ -79,7 +79,7 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
+        --bg-secondary: #333333;
         --bg-tertiary: #1e1e1e;
         --text-primary: #ffffff;
         --text-secondary: #b0b0b0;
@@ -101,7 +101,8 @@
         --monitor-bg: #2d1b47;
         --monitor-text: #b19cd9;
         --table-row-even: #262626;
-        --table-row-hover-bg: #606060;
+        --table-row-even-hover: #808080;
+        --table-row-hover-bg: #808080;
     }
 }
 
@@ -1182,6 +1183,7 @@ h1 {
 
 .circuit-table tbody tr:nth-child(even):hover {
     background-color: var(--table-row-even-hover);
+    color: var(--table-row-hover-text);
 }
 
 .breaker-number-cell {
@@ -1189,6 +1191,15 @@ h1 {
     color: var(--text-primary);
     text-align: left;
     min-width: 60px;
+}
+.breaker-number-cell .breaker-label {
+    display: inline;
+    white-space: nowrap;
+    margin-top: 0;
+    font-size: inherit;
+    line-height: inherit;
+    -webkit-line-clamp: none;
+    -webkit-box-orient: initial;
 }
 
 .double-pole-indicator {
@@ -1261,11 +1272,11 @@ h1 {
 
 /* Circuit Filters Styles */
 .circuit-filters {
-    background: #f8f9fa;
+    background: var(--bg-secondary);
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 6px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -1281,23 +1292,24 @@ h1 {
 
 .filter-group label {
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--text-primary);
     font-size: 13px;
 }
 
 .filter-group input,
 .filter-group select {
     padding: 6px 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
     font-size: 14px;
-    background-color: white;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 .filter-group input:focus,
 .filter-group select:focus {
     outline: none;
-    border-color: #3498db;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
@@ -1330,7 +1342,7 @@ h1 {
 
 #clear-filters {
     padding: 6px 12px;
-    background-color: #95a5a6;
+    background-color: var(--medium-gray);
     color: white;
     border: none;
     border-radius: 4px;
@@ -1340,7 +1352,8 @@ h1 {
 }
 
 #clear-filters:hover {
-    background-color: #7f8c8d;
+    background-color: var(--medium-gray);
+    filter: brightness(0.9);
 }
 
 /* ============================================================================
@@ -1555,12 +1568,12 @@ h1 {
     }
     
     .circuit-table tr {
-        border: 1px solid #ecf0f1;
+        border: 1px solid var(--border-color);
         border-radius: 6px;
         margin-bottom: 12px;
         padding: 12px;
-        background: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        background: var(--bg-primary);
+        box-shadow: 0 1px 3px var(--shadow-color);
     }
     
     .circuit-table td {
@@ -1575,7 +1588,7 @@ h1 {
     .circuit-table td:before {
         content: attr(data-label) ": ";
         font-weight: bold;
-        color: #2c3e50;
+        color: var(--text-primary);
         min-width: 80px;
         flex-shrink: 0;
         margin-right: 8px;

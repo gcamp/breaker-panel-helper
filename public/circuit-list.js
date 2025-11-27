@@ -189,10 +189,11 @@ class CircuitListManager {
         
         // Breaker number with double pole and tandem indicators
         var breakerNumberHtml;
-        if (breaker.double_pole) {
+        if (breaker.breaker_type === 'double_pole') {
             breakerNumberHtml = `${breaker.position}-${breaker.position + 2}<span class="double-pole-indicator">2P</span>`;
-        } else if (breaker.tandem) {
-            breakerNumberHtml = `${breaker.position}${breaker.slot_position}<span class="tandem-indicator">T</span>`;
+        } else if (breaker.breaker_type === 'tandem') {
+            const slotLetter = breaker.slot_position === 'A' ? 'A' : 'B';
+            breakerNumberHtml = `${breaker.position}${slotLetter}<span class="tandem-indicator">T</span>`;
         } else {
             breakerNumberHtml = breaker.position;
         }
@@ -205,6 +206,11 @@ class CircuitListManager {
             ? `<span class="circuit-type-pill circuit-type-${circuit.type}">${circuit.type}</span>`
             : '<span class="circuit-type-pill no-type">-</span>';
         
+        // Room with level color emoji
+        const roomHtml = circuit.room 
+            ? `${BreakerPanelApp.levelColors[circuit.room_level] || ''} ${circuit.room}`.trim()
+            : '-';
+        
         // Flags
         const flags = [];
         if (breaker.critical) flags.push(`<span class="flag-badge flag-critical">Critical</span>`);
@@ -215,7 +221,7 @@ class CircuitListManager {
         row.innerHTML = `
             <td class="breaker-number-cell" data-label="Breaker #">${breakerNumberHtml}</td>
             <td class="amperage-cell" data-label="Amps">${breaker.amperage ? breaker.amperage + 'A' : '-'}</td>
-            <td data-label="Room">${circuit.room || '-'}</td>
+            <td data-label="Room">${roomHtml}</td>
             <td data-label="Type">${circuitTypeHtml}</td>
             <td data-label="Notes">${circuit.notes || '-'}</td>
             <td data-label="Flags">${flagsHtml}</td>

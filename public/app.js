@@ -938,12 +938,6 @@ class BreakerPanelApp {
         }, {});
 
         const levelOrder = ['upper', 'main', 'basement', 'outside'];
-        const levelColors = {
-            basement: '🔵',
-            main: '🟢', 
-            upper: '🟠',
-            outside: '⚫'
-        };
         const levelNames = {
             basement: 'Basement',
             main: 'Main Level',
@@ -954,7 +948,7 @@ class BreakerPanelApp {
         let html = '';
         levelOrder.forEach(level => {
             html += `<div class="room-level-group" data-level="${level}">
-                <h4>${levelColors[level]} ${levelNames[level]}</h4>
+                <h4>${BreakerPanelApp.levelColors[level]} ${levelNames[level]}</h4>
                 <div class="room-items drop-zone">`;
             
             if (roomsByLevel[level]) {
@@ -1039,7 +1033,24 @@ class BreakerPanelApp {
     }
 }
 
-// Initialize the application when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    window.app = new BreakerPanelApp();
-});
+// Define level colors as static property for reuse across components
+BreakerPanelApp.levelColors = {
+    basement: '🔵',
+    main: '🟢', 
+    upper: '🟠',
+    outside: '⚫'
+};
+
+// Export for Node.js environment (tests)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = BreakerPanelApp;
+} else if (typeof global !== 'undefined') {
+    global.BreakerPanelApp = BreakerPanelApp;
+}
+
+// Initialize the application when DOM is ready (skip in test environment)
+if (typeof module === 'undefined' || !module.exports) {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.app = new BreakerPanelApp();
+    });
+}

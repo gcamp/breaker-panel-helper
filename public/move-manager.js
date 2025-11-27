@@ -320,3 +320,10 @@ class MoveManager {
     }
 
 }
+
+// Export for Node.js environment (tests)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MoveManager;
+} else if (typeof global !== 'undefined') {
+    global.MoveManager = MoveManager;
+}

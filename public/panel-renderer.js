@@ -698,16 +698,9 @@ class PanelRenderer {
     }
 
     generateRoomOptions(selectedId = null) {
-        const levelColors = {
-            basement: '🔵',
-            main: '🟢', 
-            upper: '🟠',
-            outside: '⚫'
-        };
-
         return this.app.allRooms
             .map(room => 
-                `<option value="${room.id}" ${selectedId == room.id ? 'selected' : ''}>${levelColors[room.level]} ${room.name}</option>`
+                `<option value="${room.id}" ${selectedId == room.id ? 'selected' : ''}>${BreakerPanelApp.levelColors[room.level]} ${room.name}</option>`
             )
             .join('');
     }
@@ -762,7 +755,7 @@ class PanelRenderer {
             
             // Get all breakers at this position from cache for display update
             const positionBreakers = [];
-            for (const [key, breaker] of this.breakerCache.entries()) {
+            for (const breaker of this.breakerCache.values()) {
                 if (breaker.position === this.app.currentBreaker.position) {
                     positionBreakers.push(breaker);
                 }

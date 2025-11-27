@@ -58,9 +58,10 @@ router.get('/panels/:panelId/complete', validateId('panelId'), ErrorHandler.asyn
     
     // Get all circuits for breakers in this panel
     const circuits = await databaseService.all(`
-        SELECT c.*, b.position, b.slot_position 
+        SELECT c.*, b.position, b.slot_position, r.name as room, r.level as room_level
         FROM circuits c 
         JOIN breakers b ON c.breaker_id = b.id 
+        LEFT JOIN rooms r ON c.room_id = r.id
         WHERE b.panel_id = ? 
         ORDER BY b.position, c.id
     `, [panelId]);
