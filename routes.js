@@ -104,13 +104,13 @@ router.post('/breakers', validateBreakerData, ErrorHandler.asyncHandler(async (r
 
     try {
         const result = await databaseService.run(
-            `INSERT INTO breakers (panel_id, position, label, amperage, critical, monitor, confirmed, breaker_type, slot_position) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [breakerData.panel_id, breakerData.position, breakerData.label, breakerData.amperage, 
-             breakerData.critical, breakerData.monitor, breakerData.confirmed, breakerData.breaker_type,
+            `INSERT INTO breakers (panel_id, position, label, amperage, monitor, confirmed, breaker_type, slot_position)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [breakerData.panel_id, breakerData.position, breakerData.label, breakerData.amperage,
+             breakerData.monitor, breakerData.confirmed, breakerData.breaker_type,
              breakerData.slot_position]
         );
-        
+
         res.status(201).json({ id: result.id, ...breakerData });
     } catch (error) {
         const errorInfo = ErrorHandler.handleDatabaseError(error, { field: 'panel_id' });
@@ -123,8 +123,8 @@ router.put('/breakers/:id', validateId(), validateBreakerData, ErrorHandler.asyn
 
     try {
         const result = await databaseService.run(
-            `UPDATE breakers SET label = ?, amperage = ?, critical = ?, monitor = ?, confirmed = ?, breaker_type = ?, slot_position = ? WHERE id = ?`,
-            [breakerData.label, breakerData.amperage, breakerData.critical, breakerData.monitor, 
+            `UPDATE breakers SET label = ?, amperage = ?, monitor = ?, confirmed = ?, breaker_type = ?, slot_position = ? WHERE id = ?`,
+            [breakerData.label, breakerData.amperage, breakerData.monitor,
              breakerData.confirmed, breakerData.breaker_type, breakerData.slot_position, req.params.id]
         );
 
@@ -201,15 +201,14 @@ router.post('/breakers/move', ErrorHandler.asyncHandler(async (req, res) => {
             } else {
                 // Create new breaker at destination and move circuits there
                 const newBreaker = await db.run(
-                    `INSERT INTO breakers (panel_id, position, slot_position, label, amperage, critical, monitor, confirmed, breaker_type) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    `INSERT INTO breakers (panel_id, position, slot_position, label, amperage, monitor, confirmed, breaker_type)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
                     [
                         destinationPanelId,
                         destinationPosition,
                         destinationSlot || 'single',
                         '', // Empty label - will be auto-generated from circuits
                         sourceBreaker.amperage,
-                        sourceBreaker.critical,
                         sourceBreaker.monitor,
                         sourceBreaker.confirmed,
                         sourceBreaker.breaker_type

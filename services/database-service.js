@@ -67,7 +67,6 @@ class DatabaseService {
                     slot_position TEXT DEFAULT 'single' CHECK(slot_position IN ('single', 'A', 'B')),
                     label TEXT,
                     amperage INTEGER CHECK(amperage > 0 AND amperage <= 200),
-                    critical BOOLEAN DEFAULT 0,
                     monitor BOOLEAN DEFAULT 0,
                     confirmed BOOLEAN DEFAULT 0,
                     breaker_type TEXT DEFAULT 'single' CHECK(breaker_type IN ('single', 'double_pole', 'tandem')),
