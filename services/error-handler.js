@@ -168,22 +168,21 @@ class ErrorHandler {
      * @returns {Object} Processed breaker data
      */
     static processBreakerData(breakerData, operation = 'create') {
-        const { 
-            panel_id, 
-            position, 
-            label, 
-            amperage, 
-            critical, 
-            monitor, 
-            confirmed, 
-            breaker_type, 
-            slot_position 
+        const {
+            panel_id,
+            position,
+            label,
+            amperage,
+            monitor,
+            confirmed,
+            breaker_type,
+            slot_position
         } = breakerData;
-        
+
         // For tandem breakers, ensure slot_position is set appropriately
         let finalSlotPosition = slot_position || 'single';
         let finalBreakerType = breaker_type || 'single';
-        
+
         if (finalBreakerType === 'tandem' && finalSlotPosition === 'single') {
             finalSlotPosition = 'A';
         }
@@ -191,7 +190,6 @@ class ErrorHandler {
         const processedData = {
             label: label?.trim() || null,
             amperage: amperage || null,
-            critical: Boolean(critical),
             monitor: Boolean(monitor),
             confirmed: Boolean(confirmed),
             breaker_type: finalBreakerType,

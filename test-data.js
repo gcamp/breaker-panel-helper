@@ -28,24 +28,24 @@ const testData = {
     ],
     breakers: [
         // Main Panel breakers
-        { panel_name: 'Main Panel', position: 1, label: 'Kitchen Outlets', amperage: 20, critical: false, monitor: false, breaker_type: 'single' },
-        { panel_name: 'Main Panel', position: 2, label: 'Living Room Lights', amperage: 15, critical: false, monitor: false, breaker_type: 'single' },
-        { panel_name: 'Main Panel', position: 3, label: 'Central AC Unit', amperage: 40, critical: true, monitor: true, breaker_type: 'double_pole' },
-        { panel_name: 'Main Panel', position: 5, label: 'Water Heater', amperage: 30, critical: false, monitor: true, breaker_type: 'single' },
-        { panel_name: 'Main Panel', position: 6, label: 'Bedroom Outlets', amperage: 20, critical: false, monitor: false, breaker_type: 'single' },
-        { panel_name: 'Main Panel', position: 7, label: 'Garage Subpanel Feed', amperage: 60, critical: true, monitor: false, breaker_type: 'double_pole' },
-        { panel_name: 'Main Panel', position: 9, label: 'Bathroom GFCI', amperage: 20, critical: false, monitor: true, breaker_type: 'single' },
-        { panel_name: 'Main Panel', position: 10, label: 'Outdoor Lighting', amperage: 15, critical: false, monitor: false, breaker_type: 'single' },
-        
+        { panel_name: 'Main Panel', position: 1, label: 'Kitchen Outlets', amperage: 20, monitor: false, breaker_type: 'single' },
+        { panel_name: 'Main Panel', position: 2, label: 'Living Room Lights', amperage: 15, monitor: false, breaker_type: 'single' },
+        { panel_name: 'Main Panel', position: 3, label: 'Central AC Unit', amperage: 40, monitor: true, breaker_type: 'double_pole' },
+        { panel_name: 'Main Panel', position: 5, label: 'Water Heater', amperage: 30, monitor: true, breaker_type: 'single' },
+        { panel_name: 'Main Panel', position: 6, label: 'Bedroom Outlets', amperage: 20, monitor: false, breaker_type: 'single' },
+        { panel_name: 'Main Panel', position: 7, label: 'Garage Subpanel Feed', amperage: 60, monitor: false, breaker_type: 'double_pole' },
+        { panel_name: 'Main Panel', position: 9, label: 'Bathroom GFCI', amperage: 20, monitor: true, breaker_type: 'single' },
+        { panel_name: 'Main Panel', position: 10, label: 'Outdoor Lighting', amperage: 15, monitor: false, breaker_type: 'single' },
+
         // Garage Subpanel breakers
-        { panel_name: 'Garage Subpanel', position: 1, label: 'Garage Door Opener', amperage: 15, critical: false, monitor: true, breaker_type: 'single' },
-        { panel_name: 'Garage Subpanel', position: 2, label: 'Workshop Outlets', amperage: 20, critical: false, monitor: false, breaker_type: 'single' },
-        { panel_name: 'Garage Subpanel', position: 3, label: 'EV Charger', amperage: 50, critical: false, monitor: true, breaker_type: 'double_pole' },
-        { panel_name: 'Garage Subpanel', position: 5, label: 'Workshop Subpanel Feed', amperage: 30, critical: false, monitor: false, breaker_type: 'single' },
-        
+        { panel_name: 'Garage Subpanel', position: 1, label: 'Garage Door Opener', amperage: 15, monitor: true, breaker_type: 'single' },
+        { panel_name: 'Garage Subpanel', position: 2, label: 'Workshop Outlets', amperage: 20, monitor: false, breaker_type: 'single' },
+        { panel_name: 'Garage Subpanel', position: 3, label: 'EV Charger', amperage: 50, monitor: true, breaker_type: 'double_pole' },
+        { panel_name: 'Garage Subpanel', position: 5, label: 'Workshop Subpanel Feed', amperage: 30, monitor: false, breaker_type: 'single' },
+
         // Workshop Subpanel breakers
-        { panel_name: 'Workshop Subpanel', position: 1, label: 'Table Saw', amperage: 20, critical: false, monitor: false, breaker_type: 'single' },
-        { panel_name: 'Workshop Subpanel', position: 2, label: 'Dust Collection', amperage: 15, critical: false, monitor: false, breaker_type: 'single' }
+        { panel_name: 'Workshop Subpanel', position: 1, label: 'Table Saw', amperage: 20, monitor: false, breaker_type: 'single' },
+        { panel_name: 'Workshop Subpanel', position: 2, label: 'Dust Collection', amperage: 15, monitor: false, breaker_type: 'single' }
     ],
     circuits: [
         // Kitchen Outlets circuits
@@ -130,7 +130,6 @@ async function addTestData() {
             slot_position TEXT DEFAULT 'single' CHECK(slot_position IN ('single', 'A', 'B')),
             label TEXT,
             amperage INTEGER CHECK(amperage > 0 AND amperage <= 200),
-            critical BOOLEAN DEFAULT 0,
             monitor BOOLEAN DEFAULT 0,
             confirmed BOOLEAN DEFAULT 0,
             breaker_type TEXT DEFAULT 'single' CHECK(breaker_type IN ('single', 'double_pole', 'tandem')),
@@ -189,8 +188,8 @@ async function addTestData() {
         for (const breaker of testData.breakers) {
             const panelId = panelIds[breaker.panel_name];
             const result = await runQuery(
-                'INSERT INTO breakers (panel_id, position, label, amperage, critical, monitor, confirmed, breaker_type, slot_position) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [panelId, breaker.position, breaker.label, breaker.amperage, breaker.critical, breaker.monitor, true, breaker.breaker_type, 'single']
+                'INSERT INTO breakers (panel_id, position, label, amperage, monitor, confirmed, breaker_type, slot_position) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [panelId, breaker.position, breaker.label, breaker.amperage, breaker.monitor, true, breaker.breaker_type, 'single']
             );
             breakerIds[breaker.label] = result.id;
             console.log(`✅ Created breaker: ${breaker.label} (Position ${breaker.position})`);
@@ -234,13 +233,12 @@ async function addTestData() {
         console.log('\n✅ Features to Test:');
         console.log('   • Multi-panel navigation (Main Panel, Garage Subpanel, Workshop Subpanel)');
         console.log('   • Double pole breakers (Central AC, Garage Subpanel Feed, EV Charger)');
-        console.log('   • Critical circuits (Central AC, Garage Subpanel Feed)');
         console.log('   • Monitor circuits (Water Heater, Bathroom GFCI, etc.)');
         console.log('   • All circuit types (Outlet, Lighting, Heating, Appliance, Subpanel)');
         console.log('   • Subpanel linking (Garage → Workshop)');
         console.log('   • Circuit List view with search and filtering');
         console.log('   • Column sorting in Circuit List');
-        console.log('   • Visual mode switching (Normal, Critical, Monitor)');
+        console.log('   • Visual mode switching (Normal, Monitor)');
         
     } catch (error) {
         console.error('❌ Error adding test data:', error);

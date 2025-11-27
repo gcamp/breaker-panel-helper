@@ -65,7 +65,6 @@ class BreakerPanelApp {
         
         // View mode buttons
         this.bindElement('normal-mode', 'click', () => this.setViewMode('normal'));
-        this.bindElement('critical-mode', 'click', () => this.setViewMode('critical'));
         this.bindElement('monitor-mode', 'click', () => this.setViewMode('monitor'));
         
         // Display mode buttons
@@ -77,7 +76,6 @@ class BreakerPanelApp {
         this.bindElement('circuit-search', 'input', () => this.applyCircuitFilters());
         this.bindElement('room-filter', 'change', () => this.applyCircuitFilters());
         this.bindElement('type-filter', 'change', () => this.applyCircuitFilters());
-        this.bindElement('critical-filter', 'change', () => this.applyCircuitFilters());
         this.bindElement('monitor-filter', 'change', () => this.applyCircuitFilters());
         this.bindElement('not-confirmed-filter', 'change', () => this.applyCircuitFilters());
         this.bindElement('clear-filters', 'click', () => this.clearCircuitFilters());
@@ -368,20 +366,17 @@ class BreakerPanelApp {
     setViewMode(mode) {
         const panelContainer = document.querySelector('.panel-container');
         const modeButtons = document.querySelectorAll('.mode-btn');
-        
+
         if (!panelContainer) return;
-        
+
         // Remove all mode classes
-        panelContainer.classList.remove('critical-mode', 'monitor-mode');
-        
+        panelContainer.classList.remove('monitor-mode');
+
         // Remove active class from all buttons
         modeButtons.forEach(btn => btn.classList.remove('active'));
-        
+
         // Add the selected mode
-        if (mode === 'critical') {
-            panelContainer.classList.add('critical-mode');
-            this.setActiveButton('critical-mode');
-        } else if (mode === 'monitor') {
+        if (mode === 'monitor') {
             panelContainer.classList.add('monitor-mode');
             this.setActiveButton('monitor-mode');
         } else {

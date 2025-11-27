@@ -80,7 +80,6 @@ class CircuitListManager {
             searchTerm: this.getElementValue('circuit-search', '').toLowerCase(),
             room: this.getElementValue('room-filter', ''),
             type: this.getElementValue('type-filter', ''),
-            critical: this.getElementChecked('critical-filter'),
             monitor: this.getElementChecked('monitor-filter'),
             notConfirmed: this.getElementChecked('not-confirmed-filter')
         };
@@ -122,16 +121,12 @@ class CircuitListManager {
             if (filters.type && circuit.type !== filters.type) {
                 return false;
             }
-            
+
             // Flag filters
-            if (filters.critical && !breaker.critical) {
-                return false;
-            }
-            
             if (filters.monitor && !breaker.monitor) {
                 return false;
             }
-            
+
             if (filters.notConfirmed && breaker.confirmed) {
                 return false;
             }
@@ -213,7 +208,6 @@ class CircuitListManager {
         
         // Flags
         const flags = [];
-        if (breaker.critical) flags.push(`<span class="flag-badge flag-critical">Critical</span>`);
         if (breaker.monitor) flags.push(`<span class="flag-badge flag-monitor">Monitor</span>`);
         if (breaker.confirmed) flags.push(`<span class="flag-badge flag-confirmed">Confirmed</span>`);
         const flagsHtml = flags.length > 0 ? `<div class="flags-cell">${flags.join('')}</div>` : '';
@@ -301,7 +295,6 @@ class CircuitListManager {
         this.setElementValue('circuit-search', '');
         this.setElementValue('room-filter', '');
         this.setElementValue('type-filter', '');
-        this.setElementChecked('critical-filter', false);
         this.setElementChecked('monitor-filter', false);
         this.setElementChecked('not-confirmed-filter', false);
         
@@ -402,8 +395,8 @@ class CircuitListManager {
                 break;
             case 'flags': {
                 // Sort by number of flags, then by type
-                const flagsA = (a.breaker.critical ? 2 : 0) + (a.breaker.monitor ? 1 : 0);
-                const flagsB = (b.breaker.critical ? 2 : 0) + (b.breaker.monitor ? 1 : 0);
+                const flagsA = (a.breaker.monitor ? 1 : 0);
+                const flagsB = (b.breaker.monitor ? 1 : 0);
                 valueA = flagsA;
                 valueB = flagsB;
                 break;

@@ -234,16 +234,14 @@ class PanelRenderer {
         // For tandem breakers, only apply flags to individual breaker elements
         // For single breakers, apply to both container and element for backward compatibility
         const isTandem = container.classList.contains('has-tandem');
-        
+
         if (!isTandem) {
             // Single breaker - apply to container for CSS targeting
-            container.classList.toggle('critical', breaker.critical);
             container.classList.toggle('monitor', breaker.monitor);
             container.classList.toggle('confirmed', breaker.confirmed);
         }
-        
+
         // Always apply to individual breaker element
-        breakerElement.classList.toggle('critical', breaker.critical);
         breakerElement.classList.toggle('monitor', breaker.monitor);
         breakerElement.classList.toggle('confirmed', breaker.confirmed);
     }
@@ -469,25 +467,18 @@ class PanelRenderer {
     updateIndicators(breakerElement, breaker) {
         const indicators = breakerElement.querySelector('.breaker-indicators');
         indicators.innerHTML = '';
-        
+
         if (!breaker) {
             return;
         }
-        
-        if (breaker.critical) {
-            const criticalIndicator = document.createElement('div');
-            criticalIndicator.className = 'indicator critical';
-            criticalIndicator.title = 'Critical Circuit';
-            indicators.appendChild(criticalIndicator);
-        }
-        
+
         if (breaker.monitor) {
             const monitorIndicator = document.createElement('div');
             monitorIndicator.className = 'indicator monitor';
             monitorIndicator.title = 'Should Monitor';
             indicators.appendChild(monitorIndicator);
         }
-        
+
         if (breaker.confirmed) {
             const confirmedIndicator = document.createElement('div');
             confirmedIndicator.className = 'indicator confirmed';
@@ -508,7 +499,6 @@ class PanelRenderer {
                     position: position,
                     label: '',
                     amperage: null,
-                    critical: false,
                     monitor: false,
                     confirmed: false,
                     breaker_type: slot !== 'single' ? 'tandem' : 'single',
@@ -530,7 +520,6 @@ class PanelRenderer {
         
         this.setFormValue('breaker-label', breaker.label || '');
         this.setFormValue('breaker-amperage', breaker.amperage || '');
-        this.setFormValue('breaker-critical', breaker.critical || false);
         this.setFormValue('breaker-monitor', breaker.monitor || false);
         this.setFormValue('breaker-confirmed', breaker.confirmed || false);
         
@@ -730,7 +719,6 @@ class PanelRenderer {
             const breakerData = {
                 label: formData.get('label'),
                 amperage: amperage && amperage !== '' ? parseInt(amperage) : null,
-                critical: formData.get('critical') === 'on',
                 monitor: formData.get('monitor') === 'on',
                 confirmed: formData.get('confirmed') === 'on',
                 breaker_type: breakerType,

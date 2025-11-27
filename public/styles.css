@@ -43,9 +43,6 @@
     --subpanel-color: #8b5cf6;
     
     /* View Mode Colors */
-    --critical-bg: #ffeaa7;
-    --critical-text: #e74c3c;
-    --critical-number-bg: #f39c12;
     --monitor-bg: #ddd6fe;
     --monitor-text: #8b5cf6;
     --monitor-number-bg: #8b5cf6;
@@ -96,8 +93,6 @@
         --warning-color: #f7dc6f;
         --danger-color: #ec7063;
         --info-color: #af7ac5;
-        --critical-bg: #4a1c1c;
-        --critical-text: #ff6b6b;
         --monitor-bg: #2d1b47;
         --monitor-text: #b19cd9;
         --table-row-even: #262626;
@@ -442,16 +437,6 @@ h1 {
     color: var(--subpanel-color);
 }
 
-/* Critical mode styling - support both container-level (single breakers) and element-level (tandem breakers) */
-.panel-container.critical-mode .breaker-container.critical .breaker,
-.panel-container.critical-mode .breaker.critical {
-    color: var(--critical-text) !important;
-    font-weight: 700 !important;
-    background-color: var(--critical-bg);
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-
 /* Monitor mode styling - support both container-level (single breakers) and element-level (tandem breakers) */
 .panel-container.monitor-mode .breaker-container.monitor .breaker,
 .panel-container.monitor-mode .breaker.monitor {
@@ -460,13 +445,6 @@ h1 {
     background-color: var(--monitor-bg);
     padding: 2px 4px;
     border-radius: 3px;
-}
-
-/* Critical mode number styling */
-.panel-container.critical-mode .breaker-container.critical .breaker .breaker-number,
-.panel-container.critical-mode .breaker.critical .breaker-number {
-    background-color: var(--critical-number-bg) !important;
-    color: white !important;
 }
 
 /* Monitor mode number styling */
@@ -524,10 +502,6 @@ h1 {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-}
-
-.indicator.critical {
-    background-color: #e74c3c;
 }
 
 .indicator.monitor {
@@ -1239,10 +1213,6 @@ h1 {
     font-size: 11px;
     font-weight: 600;
     color: white;
-}
-
-.flag-critical {
-    background-color: #e74c3c;
 }
 
 .flag-monitor {
